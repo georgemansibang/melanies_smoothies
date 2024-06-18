@@ -31,7 +31,8 @@ ingredients_list = st.multiselect(
 
 # if ingredient_list is not null (meaning nito -> :)
 if ingredients_list:
-    ingredients_string = ''
+    ingredients_string1 = ''
+    ingredients_string2 = ''
 
     for fruit_chosen in ingredients_list:
         ingredients_string1 += fruit_chosen + ' '
