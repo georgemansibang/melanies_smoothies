@@ -31,27 +31,26 @@ ingredients_list = st.multiselect(
 
 # if ingredient_list is not null (meaning nito -> :)
 if ingredients_list:
-    ingredients_string1 = ''
-    ingredients_string2 = ''
+    ingredients_string = ''
 
     for fruit_chosen in ingredients_list:
-        ingredients_string1 += fruit_chosen + ' '
-        ingredients_string2 += search_on + ' '
+       
 
         search_on=pd_df.loc[pd_df['FRUIT_NAME'] == fruit_chosen, 'SEARCH_ON'].iloc[0]
         st.write('The search value for ', fruit_chosen,' is ', search_on, '.')
         
         st.subheader(fruit_chosen + ' Nutrition Information')
         if search_on:
+            ingredients_string += search_on + ' '
             fruityvice_response = requests.get("https://fruityvice.com/api/fruit/" + search_on)
             fv_df = st.dataframe(data=fruityvice_response.json(),use_container_width=True)
-            my_insert_stmt = """ insert into smoothies.public.orders(ingredients,name_on_order)
-                values ('""" + ingredients_string2 + """','"""+name_on_order+"""')"""
         else:
+            ingredients_string += fruit_chosen + ' '
             fruityvice_response = requests.get("https://fruityvice.com/api/fruit/" + fruit_chosen)
             fv_df = st.dataframe(data=fruityvice_response.json(),use_container_width=True)
-            my_insert_stmt = """ insert into smoothies.public.orders(ingredients,name_on_order)
-                values ('""" + ingredients_string1 + """','"""+name_on_order+"""')"""
+
+    my_insert_stmt = """ insert into smoothies.public.orders(ingredients,name_on_order)
+                values ('""" + ingredients_string + """','"""+name_on_order+"""')"""
  
     #st.write(ingredient_string)
 
